@@ -1,6 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    //App version
+    ext.version_major = 1
+    ext.version_minor = 0
+    ext.version_patch = 0
+    //@version_build only modify the version code, no the version name
+    //It is use for release candidate updates in release branch
+    ext.version_build = 0
+
     ext.kotlin_version = '1.3.31'
     repositories {
         google()
@@ -15,6 +23,8 @@ buildscript {
     }
 }
 
+apply from: 'dependencies.gradle'
+
 allprojects {
     repositories {
         google()
@@ -22,6 +32,26 @@ allprojects {
         
     }
 }
+
+subprojects {
+    ext.calculateVersionName = { version_major, version_minor, version_patch ->
+        return "${version_major}.${version_minor}.${version_patch}"
+    }
+
+    ext.calculateVersionCode = { version_major, version_minor, version_patch, version_build ->
+        return version_major * 1000000 + version_minor * 10000 + version_patch * 100 + version_build
+    }
+}
+
+ext.project_config = [
+        'applicationId'       : "com.jpardogo.patinetes",
+        'min_sdk'             : 19,
+        'target_sdk'          : 28,
+        'compile_sdk'         : 28,
+        'multidex'            : true,
+        'vector_support'      : true,
+        'android_junit_runner': 'androidx.test.runner.AndroidJUnitRunner',
+]
 
 task clean(type: Delete) {
     delete rootProject.buildDir

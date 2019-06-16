@@ -7,6 +7,7 @@ import android.content.IntentSender
 import android.location.Location
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.fondesa.kpermissions.extension.listeners
 import com.fondesa.kpermissions.extension.permissionsBuilder
@@ -20,8 +21,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
+    val viewModel by viewModels<MapViewModel>()
     private lateinit var mMap: GoogleMap
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private var locationCallback: LocationCallback = object : LocationCallback() {
@@ -33,7 +35,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
     }
-    val locationRequest = LocationRequest()
+    private val locationRequest = LocationRequest()
         .setInterval(5000)
         .setFastestInterval(1000)
         .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
@@ -49,7 +51,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun updateUI(location: Location) {
         Toast.makeText(
-            this@MapsActivity,
+            this@MapActivity,
             "location - lat:${location.latitude}, lng: ${location.longitude}",
             Toast.LENGTH_SHORT
         ).show()
@@ -58,6 +60,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val latLng = LatLng(location.latitude, location.longitude)
         mMap.addMarker(MarkerOptions().position(latLng).title("Current location"))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+        stopLocationUpdates()
+        viewModel.requestPatinetes()
     }
 
     /**
@@ -79,7 +83,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
             onAccepted { permissions ->
                 // Notified when the permissions are accepted.
-                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@MapsActivity)
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@MapActivity)
                 fusedLocationClient?.lastLocation
                     ?.addOnSuccessListener { location: Location? ->
                         location?.let {
@@ -90,18 +94,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
             onDenied { permissions ->
                 // Notified when the permissions are denied.
-                Toast.makeText(this@MapsActivity, "Permission denied.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MapActivity, "Permission denied.", Toast.LENGTH_LONG).show()
             }
 
             onPermanentlyDenied { permissions ->
                 // Notified when the permissions are permanently denied.
-                Toast.makeText(this@MapsActivity, "Permission permanently denied.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MapActivity, "Permission permanently denied.", Toast.LENGTH_LONG).show()
             }
 
             onShouldShowRationale { permissions, nonce ->
                 // Notified when the permissions should show a rationale.
                 // The nonce can be used to request the permissions again.
-                Toast.makeText(this@MapsActivity, "Should show rationale.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MapActivity, "Should show rationale.", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -123,7 +127,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         // Show the dialog by calling startResolutionForResult(),
                         // and check the result in onActivityResult().
                         e.startResolutionForResult(
-                            this@MapsActivity,
+                            this@MapActivity,
                             REQUEST_CHECK_SETTINGS
                         )
                     } catch (sendEx: IntentSender.SendIntentException) {
@@ -133,7 +137,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
 
-        Toast.makeText(this@MapsActivity, "startLocationUpdates.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@MapActivity, "startLocationUpdates.", Toast.LENGTH_SHORT).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -145,7 +149,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         // All required changes were successfully made
                         Toast
                             .makeText(
-                                this@MapsActivity,
+                                this@MapActivity,
                                 "Success ${LocationSettingsStates.fromIntent(data).isLocationPresent}",
                                 Toast.LENGTH_SHORT
                             )
@@ -159,7 +163,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     Activity.RESULT_CANCELED ->
                         // The user was asked to change settings, but chose not to
                         Toast.makeText(
-                            this@MapsActivity,
+                            this@MapActivity,
                             "GPS activation canceled, no location found",
                             Toast.LENGTH_SHORT
                         ).show()

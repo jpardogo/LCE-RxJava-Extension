@@ -1,36 +1,84 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
-android {
-    compileSdkVersion 28
-    defaultConfig {
-        applicationId "com.jpardogo.patinetes"
-        minSdkVersion 21
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+class EnableDaggerIncrementalAP implements CommandLineArgumentProvider {
+    @Override
+    Iterable<String> asArguments() {
+        return ["-Adagger.gradle.incremental"]
     }
 }
 
+android {
+    compileSdkVersion project_config.compile_sdk
+    defaultConfig {
+        applicationId project_config.applicationId
+        minSdkVersion project_config.min_sdk
+        targetSdkVersion project_config.target_sdk
+        versionName calculateVersionName(version_major, version_minor, version_patch)
+        versionCode calculateVersionCode(version_major, version_minor, version_patch, version_build)
+        testInstrumentationRunner project_config.android_junit_runner
+        vectorDrawables.useSupportLibrary = project_config.vector_support
+        javaCompileOptions {
+            annotationProcessorOptions {
+                compilerArgumentProvider new EnableDaggerIncrementalAP()
+            }
+        }
+    }
+
+    buildTypes {
+
+        debug {
+
+        }
+
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+}
+
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.core:core-ktx:1.0.2'
-    implementation 'com.google.android.gms:play-services-maps:16.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-    implementation 'com.github.fondesa:kpermissions:2.0.1'
-    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    //Kotlin
+    implementation libraries.kotlin
+    //Google
+    implementation libraries.play_services_maps
+    implementation libraries.play_services_location
+    implementation libraries.dagger
+    kapt libraries.dagger_compiler
+    implementation libraries.dagger_android
+    implementation libraries.dagger_android_support
+    kapt libraries.dagger_android_processor
+    //AndroidX
+    implementation libraries.androidx_appcompat
+    implementation libraries.androidx_recyclerview
+    implementation libraries.androidx_constraintlayout
+    implementation libraries.androidx_material
+    annotationProcessor libraries.androidx_lifecycle_compiler
+    implementation libraries.androidx_lifecycle_extensions
+    implementation libraries.androidx_lifecycle_reactivestreams_ktx
+    implementation libraries.androidx_fragment_ktx
+    implementation libraries.androidx_core_ktx
+    implementation libraries.androidx_livedata_ktx
+    //other
+    implementation libraries.kpermissions
+    implementation libraries.timber
+    //Test
+    testImplementation libraries.mockito_kotlin
+    testImplementation libraries.junit
+    testImplementation libraries.androidx_arch_core_test
+
+    testImplementation libraries.mockito_kotlin
+    testImplementation libraries.junit
+    testImplementation libraries.androidx_arch_core_test
+    androidTestImplementation libraries.androidx_test_junit_ext
+    androidTestImplementation libraries.androidx_espresso_core
 }
