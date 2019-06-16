@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.apollographql.android'
 
 class EnableDaggerIncrementalAP implements CommandLineArgumentProvider {
     @Override
@@ -71,7 +72,10 @@ dependencies {
     //other
     implementation libraries.kpermissions
     implementation libraries.timber
+    implementation libraries.apollographql
+    compileOnly 'org.jetbrains:annotations:13.0'
     //Test
+    testCompileOnly 'org.jetbrains:annotations:13.0'
     testImplementation libraries.mockito_kotlin
     testImplementation libraries.junit
     testImplementation libraries.androidx_arch_core_test

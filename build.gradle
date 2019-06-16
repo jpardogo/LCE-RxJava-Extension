@@ -9,17 +9,18 @@ buildscript {
     //It is use for release candidate updates in release branch
     ext.version_build = 0
 
+    ext.android_gradle = '3.5.0-beta04'
     ext.kotlin_version = '1.3.31'
+    ext.apollo_version = '1.0.0'
     repositories {
         google()
         jcenter()
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0-beta04'
+        classpath "com.android.tools.build:gradle:$android_gradle"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath "com.apollographql.apollo:apollo-gradle-plugin:$apollo_version"
     }
 }
 
