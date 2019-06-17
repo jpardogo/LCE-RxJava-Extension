@@ -24,11 +24,14 @@ ext.lib_versions = [
         rxbinding                : '3.0.0-alpha2',
         //Java
         'javax_inject'           : '1',
-        rx_java2                 : '2.2.8',
+        rx_java                  : '2.2.8',
         rx_android               : '2.1.1',
         rx_kotlin                : '2.3.0',
+        rx_apollo                : '1.0.0',
+
         //Other
         kpermissions             : '2.0.1',
+        jetbrains_annotations    : '13.0',
         //test
         junit                    : '4.12',
         mockito_kotlin           : '2.0.0-RC1',
@@ -86,10 +89,12 @@ ext.libraries = [
         rxbinding_material                    : "com.jakewharton.rxbinding3:rxbinding-material:${lib_versions.rxbinding}",
         //Java
         javax_inject                          : "javax.inject:javax.inject:${lib_versions.javax_inject}",
-        rx_java2                              : "io.reactivex.rxjava2:rxjava:${lib_versions.rx_java2}",
+        rx_java                               : "io.reactivex.rxjava2:rxjava:${lib_versions.rx_java}",
         rx_android                            : "io.reactivex.rxjava2:rxandroid:${lib_versions.rx_android}",
         rx_kotlin                             : "io.reactivex.rxjava2:rxkotlin:${lib_versions.rx_kotlin}",
+        rx_apollo                             : "com.apollographql.apollo:apollo-rx2-support:${lib_versions.rx_apollo}",
         //Other
+        jetbrains_annotations                 : "org.jetbrains:annotations:${lib_versions.jetbrains_annotations}",
         kpermissions                          : "com.github.fondesa:kpermissions:${lib_versions.kpermissions}",
         apollographql                         : "com.apollographql.apollo:apollo-runtime:$apollo_version",
         apollographql_android                 : "com.apollographql.apollo:apollo-android-support:$apollo_version",

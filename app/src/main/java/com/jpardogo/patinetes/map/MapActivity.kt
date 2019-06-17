@@ -1,4 +1,4 @@
-package com.jpardogo.patinetes
+package com.jpardogo.patinetes.map
 
 import android.Manifest
 import android.app.Activity
@@ -19,6 +19,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.jpardogo.patinetes.R
 
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {

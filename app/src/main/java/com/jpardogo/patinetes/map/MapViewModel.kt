@@ -1,5 +1,6 @@
-package com.jpardogo.patinetes
+package com.jpardogo.patinetes.map
 
+import com.jpardogo.patinetes.common.BaseViewModel
 import timber.log.Timber
 
 class MapViewModel : BaseViewModel() {

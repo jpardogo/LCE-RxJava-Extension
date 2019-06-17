@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.apollographql.android'
 
 class EnableDaggerIncrementalAP implements CommandLineArgumentProvider {
     @Override
@@ -21,11 +20,17 @@ android {
         versionCode calculateVersionCode(version_major, version_minor, version_patch, version_build)
         testInstrumentationRunner project_config.android_junit_runner
         vectorDrawables.useSupportLibrary = project_config.vector_support
+        multiDexEnabled project_config.multidex
         javaCompileOptions {
             annotationProcessorOptions {
                 compilerArgumentProvider new EnableDaggerIncrementalAP()
             }
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -44,13 +49,19 @@ android {
     androidExtensions {
         experimental = true
     }
-
 }
 
 dependencies {
+    // Dependency to data layer needed for Dagger to build the graph.
+    // Presentation layer should not have any dependencies reference to the data layer but the DataComponent
+    implementation project(':data')
+    implementation project(':domain')
+    //(Presentation) -> (Domain) <- (Data)
+    //--------
     //Kotlin
     implementation libraries.kotlin
     //Google
+    implementation libraries.androidx_multidex
     implementation libraries.play_services_maps
     implementation libraries.play_services_location
     implementation libraries.dagger
@@ -58,7 +69,6 @@ dependencies {
     implementation libraries.dagger_android
     implementation libraries.dagger_android_support
     kapt libraries.dagger_android_processor
-    //AndroidX
     implementation libraries.androidx_appcompat
     implementation libraries.androidx_recyclerview
     implementation libraries.androidx_constraintlayout
@@ -69,17 +79,18 @@ dependencies {
     implementation libraries.androidx_fragment_ktx
     implementation libraries.androidx_core_ktx
     implementation libraries.androidx_livedata_ktx
+    //Java
+    implementation libraries.rx_java
+    implementation libraries.rx_kotlin
+    implementation libraries.rx_android
+    implementation libraries.threetenabp
     //other
     implementation libraries.kpermissions
     implementation libraries.timber
-    implementation libraries.apollographql
-    compileOnly 'org.jetbrains:annotations:13.0'
     //Test
-    testCompileOnly 'org.jetbrains:annotations:13.0'
     testImplementation libraries.mockito_kotlin
     testImplementation libraries.junit
     testImplementation libraries.androidx_arch_core_test
-
     testImplementation libraries.mockito_kotlin
     testImplementation libraries.junit
     testImplementation libraries.androidx_arch_core_test

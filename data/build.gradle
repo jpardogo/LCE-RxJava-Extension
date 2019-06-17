@@ -1,0 +1,68 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.apollographql.android'
+
+android {
+    compileSdkVersion project_config.compile_sdk
+
+    defaultConfig {
+        minSdkVersion project_config.min_sdk
+        targetSdkVersion project_config.target_sdk
+        versionName calculateVersionName(version_major, version_minor, version_patch)
+        versionCode calculateVersionCode(version_major, version_minor, version_patch, version_build)
+        testInstrumentationRunner project_config.android_junit_runner
+        buildConfigField "String", "BASE_URL", "\"https://api.multicycles.org/v1\""
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    apollo {
+        generateKotlinModels = true
+        nullableValueType = "apolloOptional"
+    }
+
+    buildTypes {
+
+        debug {
+        }
+
+        release {
+        }
+    }
+}
+
+dependencies {
+    implementation project(':domain')
+    //Kotlin
+    implementation libraries.kotlin
+    //Google
+    implementation libraries.androidx_core_ktx
+    implementation libraries.dagger
+    kapt libraries.dagger_compiler
+    implementation libraries.dagger_android
+    implementation libraries.dagger_android_support
+    kapt libraries.dagger_android_processor
+    //Square
+    implementation libraries.okhttp
+    implementation libraries.okhttp_logging_interceptor
+    implementation libraries.moshi
+    kapt libraries.moshi_codegen
+    //Java
+    implementation libraries.rx_java
+    implementation libraries.rx_android
+    implementation libraries.rx_kotlin
+    implementation libraries.rx_apollo
+    implementation libraries.threetenabp
+    //Other
+    implementation libraries.apollographql
+    compileOnly libraries.jetbrains_annotations
+    //Test
+    testImplementation libraries.mockito_kotlin
+    testImplementation libraries.junit
+    testImplementation libraries.androidx_test_junit_ext
+    testCompileOnly libraries.jetbrains_annotations
+}

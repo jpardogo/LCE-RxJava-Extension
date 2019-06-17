@@ -1,4 +1,4 @@
-package com.jpardogo.patinetes
+package com.jpardogo.patinetes.common
 
 import androidx.lifecycle.ViewModel
 
