@@ -1,17 +1,9 @@
 package com.jpardogo.patinetes.common.di.modules
 
-import com.jpardogo.patinetes.common.di.annotations.ActivityScope
-import com.jpardogo.patinetes.map.MapActivity
+import com.jpardogo.patinetes.map.MapActivityBuilder
 import dagger.Module
-import dagger.android.ContributesAndroidInjector
 
 @Module(
-    includes = [ActivityViewModelsModule::class]
+    includes = [MapActivityBuilder::class]
 )
-abstract class ActivitiesModule {
-
-    @ActivityScope
-    @ContributesAndroidInjector
-    abstract fun splashActivity(): MapActivity
-
-}
+abstract class ActivitiesModule

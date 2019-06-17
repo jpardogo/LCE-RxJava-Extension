@@ -14,7 +14,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
 @Module
-class NetModule {
+class RemoteModule {
 
     companion object {
         private const val CACHE_SIZE: Long = 10 * 1024 * 1024

@@ -14,7 +14,7 @@ import dagger.Component
         RepositoriesModule::class,
         DataSourcesModule::class,
         DataStoresModule::class,
-        NetModule::class
+        RemoteModule::class
     ]
 )
 interface DataComponent {
