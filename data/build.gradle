@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.apollographql.android'
 
 android {
     compileSdkVersion project_config.compile_sdk
@@ -18,20 +17,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    apollo {
-        generateKotlinModels = true
-        nullableValueType = "apolloOptional"
-    }
-
-    buildTypes {
-
-        debug {
-        }
-
-        release {
-        }
     }
 }
 
@@ -55,10 +40,8 @@ dependencies {
     implementation libraries.rx_java
     implementation libraries.rx_android
     implementation libraries.rx_kotlin
-    implementation libraries.rx_apollo
     implementation libraries.threetenabp
     //Other
-    implementation libraries.apollographql
     compileOnly libraries.jetbrains_annotations
     //Test
     testImplementation libraries.mockito_kotlin

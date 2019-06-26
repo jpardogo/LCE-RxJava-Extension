@@ -52,18 +52,21 @@ android {
 }
 
 dependencies {
-    // Dependency to data layer needed for Dagger to build the graph.
-    // Presentation layer should not have any dependencies reference to the data layer but the DataComponent
-    implementation project(':data')
+    //Layer Modules
     implementation project(':domain')
+    // Dependency to data layer needed for Dagger to build the graph. The Presentation layer should
+    // not have any dependencies reference to the data layer but the DataComponent
+    implementation project(':data')
     //(Presentation) -> (Domain) <- (Data)
-    //--------
+    //----------
+    //Libraries
+    //----------
+    //project libs
+    implementation project(':lce')
     //Kotlin
     implementation libraries.kotlin
     //Google
     implementation libraries.androidx_multidex
-    implementation libraries.play_services_maps
-    implementation libraries.play_services_location
     implementation libraries.dagger
     kapt libraries.dagger_compiler
     implementation libraries.dagger_android
@@ -85,7 +88,6 @@ dependencies {
     implementation libraries.rx_android
     implementation libraries.threetenabp
     //other
-    implementation libraries.kpermissions
     implementation libraries.timber
     //Test
     testImplementation libraries.mockito_kotlin

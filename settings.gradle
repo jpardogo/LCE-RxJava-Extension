@@ -1,2 +1,2 @@
-include ':app', ':data', ':domain'
-rootProject.name='patinetes'
+include ':app', ':data', ':domain', ':lce'
+rootProject.name='kotlinCleanArchExample'

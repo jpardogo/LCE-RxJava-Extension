@@ -27,10 +27,7 @@ ext.lib_versions = [
         rx_java                  : '2.2.8',
         rx_android               : '2.1.1',
         rx_kotlin                : '2.3.0',
-        rx_apollo                : '1.0.0',
-
         //Other
-        kpermissions             : '2.0.1',
         jetbrains_annotations    : '13.0',
         //test
         junit                    : '4.12',
@@ -92,12 +89,8 @@ ext.libraries = [
         rx_java                               : "io.reactivex.rxjava2:rxjava:${lib_versions.rx_java}",
         rx_android                            : "io.reactivex.rxjava2:rxandroid:${lib_versions.rx_android}",
         rx_kotlin                             : "io.reactivex.rxjava2:rxkotlin:${lib_versions.rx_kotlin}",
-        rx_apollo                             : "com.apollographql.apollo:apollo-rx2-support:${lib_versions.rx_apollo}",
         //Other
         jetbrains_annotations                 : "org.jetbrains:annotations:${lib_versions.jetbrains_annotations}",
-        kpermissions                          : "com.github.fondesa:kpermissions:${lib_versions.kpermissions}",
-        apollographql                         : "com.apollographql.apollo:apollo-runtime:$apollo_version",
-        apollographql_android                 : "com.apollographql.apollo:apollo-android-support:$apollo_version",
         //test
         junit                                 : "junit:junit:${lib_versions.junit}",
         mockito_kotlin                        : "com.nhaarman.mockitokotlin2:mockito-kotlin:${lib_versions.mockito_kotlin}",

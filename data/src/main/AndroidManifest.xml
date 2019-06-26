@@ -1,2 +1,1 @@
-<manifest
-        package="com.jpardogo.patinetes.data"/>
+<manifest package="com.jpardogo.example.data" />
