@@ -1,3 +1,5 @@
+@file:Suppress("USELESS_CAST")
+
 package com.jpardogo.lce
 
 import io.reactivex.Completable
@@ -32,7 +34,7 @@ fun <C> Single<C>.toLce(): Observable<Lce<C, Throwable>> =
     toObservable().toLce()
 
 fun <C> Observable<C>.toLce(): Observable<Lce<C, Throwable>> =
-    map { Lce.Content<C, Throwable>(it) }
+    map { Lce.Content<C, Throwable>(it) as Lce<C, Throwable> }
         .startWith(Lce.Loading(true))
         .onErrorReturn { Lce.Error(it) }
         .concatWith(Observable.just(Lce.Loading(false)))

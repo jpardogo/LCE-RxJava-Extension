@@ -11,7 +11,8 @@ fun <C> MutableLceLiveData<C>.asImmutableLiveData() = this as LceLiveData<C>
 fun <C, E> MutableLceLiveData2<C, E>.asImmutableLiveData() = this as LceLiveData2<C, E>
 fun <L, C, E> MutableLceLiveData3<L, C, E>.asImmutableLiveData() = this as LceLiveData3<L, C, E>
 
-class MutableLceLiveDataCompletable : LceLiveData<Unit>() {
+class MutableLceLiveDataCompletable(crashReporter: CrashReporter? = null) :
+    LceLiveData<Unit>(crashReporter) {
 
     fun isLoading(isLoading: Boolean, threadStrategy: LiveDataThreadStrategy = DefaultThread) {
         super.loading(isLoading, threadStrategy)
@@ -21,12 +22,16 @@ class MutableLceLiveDataCompletable : LceLiveData<Unit>() {
         super.complete(Unit, threadStrategy)
     }
 
-    public override fun error(error: LceErrorViewEntity, threadStrategy: LiveDataThreadStrategy) {
-        super.error(error, threadStrategy)
+    public override fun error(
+        error: LceErrorViewEntity,
+        throwable: Throwable?,
+        threadStrategy: LiveDataThreadStrategy
+    ) {
+        super.error(error, throwable, threadStrategy)
     }
 }
 
-class MutableLceLiveData<C> : LceLiveData<C>() {
+class MutableLceLiveData<C>(crashReporter: CrashReporter? = null) : LceLiveData<C>(crashReporter) {
 
     fun isLoading(isLoading: Boolean, threadStrategy: LiveDataThreadStrategy = DefaultThread) {
         super.loading(isLoading, threadStrategy)
@@ -36,12 +41,17 @@ class MutableLceLiveData<C> : LceLiveData<C>() {
         super.content(content, threadStrategy)
     }
 
-    public override fun error(error: LceErrorViewEntity, threadStrategy: LiveDataThreadStrategy) {
-        super.error(error, threadStrategy)
+    public override fun error(
+        error: LceErrorViewEntity,
+        throwable: Throwable?,
+        threadStrategy: LiveDataThreadStrategy
+    ) {
+        super.error(error, throwable, threadStrategy)
     }
 }
 
-class MutableLceLiveData2<C, E> : LceLiveData2<C, E>() {
+class MutableLceLiveData2<C, E>(crashReporter: CrashReporter? = null) :
+    LceLiveData2<C, E>(crashReporter) {
     fun isLoading(isLoading: Boolean, threadStrategy: LiveDataThreadStrategy = DefaultThread) {
         super.loading(isLoading, threadStrategy)
     }
@@ -50,12 +60,17 @@ class MutableLceLiveData2<C, E> : LceLiveData2<C, E>() {
         super.content(content, threadStrategy)
     }
 
-    public override fun error(error: E, threadStrategy: LiveDataThreadStrategy) {
-        super.error(error, threadStrategy)
+    public override fun error(
+        error: E,
+        throwable: Throwable?,
+        threadStrategy: LiveDataThreadStrategy
+    ) {
+        super.error(error, throwable, threadStrategy)
     }
 }
 
-class MutableLceLiveData3<L, C, E> : LceLiveData3<L, C, E>() {
+class MutableLceLiveData3<L, C, E>(crashReporter: CrashReporter? = null) :
+    LceLiveData3<L, C, E>(crashReporter) {
 
     fun isLoading(isLoading: L, threadStrategy: LiveDataThreadStrategy = DefaultThread) {
         super.loading(isLoading, threadStrategy)
@@ -65,14 +80,23 @@ class MutableLceLiveData3<L, C, E> : LceLiveData3<L, C, E>() {
         super.content(content, threadStrategy)
     }
 
-    public override fun error(error: E, threadStrategy: LiveDataThreadStrategy) {
-        super.error(error, threadStrategy)
+    public override fun error(
+        error: E,
+        throwable: Throwable?,
+        threadStrategy: LiveDataThreadStrategy
+    ) {
+        super.error(error, throwable, threadStrategy)
     }
 }
 
-open class LceLiveData<C> : LceLiveData2<C, LceErrorViewEntity>()
-open class LceLiveData2<C, E> : LceLiveData3<Boolean, C, E>()
+open class LceLiveData<C>(crashReporter: CrashReporter? = null) :
+    LceLiveData2<C, LceErrorViewEntity>(crashReporter)
+
+open class LceLiveData2<C, E>(crashReporter: CrashReporter?) :
+    LceLiveData3<Boolean, C, E>(crashReporter)
+
 open class LceLiveData3<L, C, E>(
+    private val crashReporter: CrashReporter? = null,
     @VisibleForTesting(otherwise = PRIVATE) val loadingLiveData: MutableLiveData<L> = MutableLiveData(),
     @VisibleForTesting(otherwise = PRIVATE) val contentLiveData: MutableLiveData<C> = MutableLiveData(),
     @VisibleForTesting(otherwise = PRIVATE) val errorLiveData: MutableLiveData<E> = MutableLiveData()
@@ -91,7 +115,12 @@ open class LceLiveData3<L, C, E>(
         send(this.contentLiveData, content, threadStrategy)
     }
 
-    protected open fun error(error: E, threadStrategy: LiveDataThreadStrategy = DefaultThread) {
+    protected open fun error(
+        error: E,
+        throwable: Throwable? = null,
+        threadStrategy: LiveDataThreadStrategy = DefaultThread
+    ) {
+        crashReporter?.report(throwable)
         send(this.errorLiveData, error, threadStrategy)
     }
 

@@ -11,7 +11,8 @@ android {
         versionName calculateVersionName(version_major, version_minor, version_patch)
         versionCode calculateVersionCode(version_major, version_minor, version_patch, version_build)
         testInstrumentationRunner project_config.android_junit_runner
-        buildConfigField "String", "BASE_URL", "\"https://api.multicycles.org/v1\""
+        buildConfigField "String", "EXAMPLE_DB_NAME", "\"my_database\""
+        buildConfigField "String", "BASE_URL", "\"https://www.myapi.com/v1/\""
     }
 
     compileOptions {
@@ -31,11 +32,18 @@ dependencies {
     implementation libraries.dagger_android
     implementation libraries.dagger_android_support
     kapt libraries.dagger_android_processor
+    implementation libraries.androidx_room_runtime
+    kapt libraries.androidx_room_compiler
+    implementation libraries.androidx_room_rxjava2
+    implementation libraries.androidx_room_ktx
     //Square
     implementation libraries.okhttp
     implementation libraries.okhttp_logging_interceptor
     implementation libraries.moshi
     kapt libraries.moshi_codegen
+    implementation libraries.retrofit
+    implementation libraries.retrofit_adapter_rxjava2
+    implementation libraries.retrofit_converter_moshi
     //Java
     implementation libraries.rx_java
     implementation libraries.rx_android

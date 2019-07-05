@@ -10,7 +10,7 @@ buildscript {
     ext.version_build = 0
 
     ext.android_gradle = '3.5.0-beta05'
-    ext.kotlin_version = '1.3.31'
+    ext.kotlin_version = '1.3.41'
     ext.apollo_version = '1.0.0'
     repositories {
         google()
@@ -41,11 +41,13 @@ subprojects {
     ext.calculateVersionCode = { version_major, version_minor, version_patch, version_build ->
         return version_major * 1000000 + version_minor * 10000 + version_patch * 100 + version_build
     }
+
+    ext.enableDaggerIncrementalAP = new EnableDaggerIncrementalAP()
 }
 
 ext.project_config = [
         'applicationId'       : "com.jpardogo.example",
-        'min_sdk'             : 19,
+        'min_sdk'             : 21,
         'target_sdk'          : 28,
         'compile_sdk'         : 28,
         'multidex'            : true,
@@ -55,4 +57,11 @@ ext.project_config = [
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+class EnableDaggerIncrementalAP implements CommandLineArgumentProvider {
+    @Override
+    Iterable<String> asArguments() {
+        return ["-Adagger.gradle.incremental"]
+    }
 }

@@ -2,7 +2,7 @@ package com.jpardogo.example
 
 import android.content.Context
 import androidx.multidex.MultiDex
-import com.jpardogo.example.common.di.DaggerPresentationComponent
+import com.jpardogo.example.common.di.DaggerAppComponent
 import com.jpardogo.example.common.initializers.AppInitializers
 import com.jpardogo.example.data.common.di.DaggerDataComponent
 import dagger.android.AndroidInjector
@@ -20,7 +20,7 @@ class ExampleApp : DaggerApplication() {
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        val presentationComponentBuilder = DaggerPresentationComponent
+        val presentationComponentBuilder = DaggerAppComponent
             .builder()
             .application(this)
         presentationComponentBuilder.dataComponent(

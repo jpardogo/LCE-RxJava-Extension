@@ -1,0 +1,70 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion project_config.compile_sdk
+
+    defaultConfig {
+        minSdkVersion project_config.min_sdk
+        targetSdkVersion project_config.target_sdk
+        versionName calculateVersionName(version_major, version_minor, version_patch)
+        versionCode calculateVersionCode(version_major, version_minor, version_patch, version_build)
+        testInstrumentationRunner project_config.android_junit_runner
+        javaCompileOptions {
+            annotationProcessorOptions {
+                compilerArgumentProvider enableDaggerIncrementalAP
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+}
+
+dependencies {
+    api project(':lce')
+    implementation project(':domain')
+    //Kotlin
+    implementation libraries.kotlin
+    //Google
+    implementation libraries.androidx_multidex
+    implementation libraries.dagger
+    kapt libraries.dagger_compiler
+    implementation libraries.dagger_android
+    implementation libraries.dagger_android_support
+    kapt libraries.dagger_android_processor
+    implementation libraries.androidx_appcompat
+    implementation libraries.androidx_recyclerview
+    implementation libraries.androidx_constraintlayout
+    implementation libraries.androidx_material
+    annotationProcessor libraries.androidx_lifecycle_compiler
+    implementation libraries.androidx_lifecycle_extensions
+    implementation libraries.androidx_lifecycle_reactivestreams_ktx
+    implementation libraries.androidx_fragment_ktx
+    implementation libraries.androidx_core_ktx
+    implementation libraries.androidx_livedata_ktx
+    //Java
+    implementation libraries.rx_java
+    implementation libraries.rx_kotlin
+    implementation libraries.rx_android
+    implementation libraries.threetenabp
+    //other
+    implementation libraries.timber
+    //Test
+    testImplementation libraries.mockito_kotlin
+    testImplementation libraries.junit
+    testImplementation libraries.androidx_arch_core_test
+    testImplementation libraries.mockito_kotlin
+    testImplementation libraries.junit
+    testImplementation libraries.androidx_arch_core_test
+    androidTestImplementation libraries.androidx_test_junit_ext
+    androidTestImplementation libraries.androidx_espresso_core
+}
