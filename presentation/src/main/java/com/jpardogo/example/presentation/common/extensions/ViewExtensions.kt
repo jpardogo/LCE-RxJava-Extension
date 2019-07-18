@@ -4,27 +4,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.core.view.isGone
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 
-fun View.gone() {
-    visibility = View.GONE
-}
-
-fun View.visible() {
-    visibility = View.VISIBLE
-}
-
-fun View.invisible() {
-    visibility = View.INVISIBLE
-}
-
-fun View.setIsVisible(isVisible: Boolean, keepSpace: Boolean = false) {
-    if (isVisible) visible()
+fun View.setVisibility(visible: Boolean, keepSpace: Boolean) {
+    if (visible) isVisible = true
     else {
         if (keepSpace) {
-            invisible()
+            isInvisible = true
         } else {
-            gone()
+            isGone = true
         }
     }
 }
