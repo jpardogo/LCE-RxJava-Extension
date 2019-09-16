@@ -10,7 +10,7 @@ class LceErrorViewEntity private constructor(
 ) {
 
     companion object {
-        private const val NO_STRING_RES = -1
+        const val NO_STRING_RES = -1
         fun <T> newInstance(
             errorContent: T? = null,
             @StringRes stringResMessage: Int = NO_STRING_RES,
