@@ -1,2 +1,2 @@
-include ':app', ':data', ':domain', ':lce', ':presentation'
+include ':app', ':data', ':domain', ':lce-rxjava-extension', ':presentation'
 rootProject.name='LCE-RxJava-Extension'
