@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">KotlinCleanArchTemplate</string>
+    <string name="app_name">ExampleApp</string>
     <string name="title_activity_example">Title Activity</string>
 </resources>

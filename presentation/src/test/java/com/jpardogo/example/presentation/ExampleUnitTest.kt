@@ -1,6 +1,7 @@
 package com.jpardogo.example.presentation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.jpardogo.example.domain.feature.ExampleDomainEntity
 import com.jpardogo.example.domain.feature.GetExampleUseCase
 import com.jpardogo.example.presentation.feature.ExampleViewModel
 import com.jpardogo.lce.CrashReporter
@@ -17,11 +18,12 @@ class ExampleUnitTest {
     private lateinit var sut: ExampleViewModel
     private val crashReporter: CrashReporter = mock()
     private val compositeDisposable: CompositeDisposable = mock()
+    private val exmapleDomainModel: ExampleDomainEntity = mock()
     @Test
     fun `verify content liveData is notify in happy case`() {
         // given
         val getExampleUseCase: GetExampleUseCase = mock {
-            on { execute(any()) } doReturn Single.just(true)
+            on { execute(any()) } doReturn Single.just(exmapleDomainModel)
         }
 
         sut = ExampleViewModel(

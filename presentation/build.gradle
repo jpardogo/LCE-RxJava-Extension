@@ -30,8 +30,8 @@ android {
 }
 
 dependencies {
-    api project(':lce')
     implementation project(':domain')
+    implementation project(':lce')
     //Kotlin
     implementation libraries.kotlin
     //Google
