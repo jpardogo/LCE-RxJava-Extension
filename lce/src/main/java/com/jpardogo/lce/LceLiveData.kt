@@ -6,10 +6,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 
-fun MutableLceLiveDataCompletable.asImmutableLiveData() = this as LceLiveData<Unit>
-fun <C> MutableLceLiveData<C>.asImmutableLiveData() = this as LceLiveData<C>
-fun <C, E> MutableLceLiveData2<C, E>.asImmutableLiveData() = this as LceLiveData2<C, E>
-fun <L, C, E> MutableLceLiveData3<L, C, E>.asImmutableLiveData() = this as LceLiveData3<L, C, E>
+fun MutableLceLiveDataCompletable.asImmutable() = this as LceLiveData<Unit>
+fun <C> MutableLceLiveData<C>.asImmutable() = this as LceLiveData<C>
+fun <C, E> MutableLceLiveData2<C, E>.asImmutable() = this as LceLiveData2<C, E>
+fun <L, C, E> MutableLceLiveData3<L, C, E>.asImmutable() = this as LceLiveData3<L, C, E>
 
 class MutableLceLiveDataCompletable(crashReporter: CrashReporter? = null) :
     LceLiveData<Unit>(crashReporter) {

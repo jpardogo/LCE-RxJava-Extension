@@ -15,7 +15,7 @@ class ExampleViewModel @Inject constructor(
 ) : BaseViewModel(compositeDisposable) {
 
     private val exampleLceMutableLiveData = MutableLceLiveData<ExampleViewEntity>(crashReporter)
-    val exampleLceLiveData = exampleLceMutableLiveData.asImmutableLiveData()
+    val exampleLceLiveData = exampleLceMutableLiveData.asImmutable()
 
     fun doSomething(p1: Double, p2: Double) {
         getExampleUseCase
