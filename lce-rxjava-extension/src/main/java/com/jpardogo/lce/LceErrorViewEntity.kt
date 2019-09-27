@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 
 @Suppress("UNUSED_PARAMETER")
 class LceErrorViewEntity private constructor(
-    errorContent: Any? = null, @StringRes private val stringResMessage: Int = NO_STRING_RES,
+    val errorContent: Any? = null, @StringRes private val stringResMessage: Int = NO_STRING_RES,
     private val stringMessage: String = ""
 ) {
 
