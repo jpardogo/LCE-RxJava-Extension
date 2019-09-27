@@ -5,7 +5,7 @@ group='com.github.jpardogo'
 
 def lce_version_major = 1
 def lce_version_minor = 0
-def lce_version_patch = 0
+def lce_version_patch = 1
 def lce_version_build = 0
 
 android {
