@@ -1,6 +1,6 @@
 # Android Library providing and RxJava extension to follow Loading, Content &amp; Error pattern
 
-Loading, Content &amp; Error pattern to create a consistent way of communication between ViewModel or Presenters and the View(Activities/Fragment/CustomViews).
+Loading, Content &amp; Error pattern to create a consistent way of communication between ViewModel or Presenters and the View(Activities/Fragment/CustomViews) using SingleLiveEvent's.
 
 Convert to observables the upstream type return from domain to provide:
 
