@@ -2,7 +2,7 @@
 
 buildscript {
     //App version
-    ext.version_major = 1
+    ext.version_major = 2
     ext.version_minor = 0
     ext.version_patch = 0
     //@version_build only modify the version code, no the version name
