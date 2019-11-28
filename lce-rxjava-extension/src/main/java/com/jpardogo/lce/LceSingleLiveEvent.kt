@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 
 fun <T> MutableLiveData<T>.asImmutable() = this as LiveData<T>
-fun <T> SingleMutableLiveEvent<T>.asImmutable() = this as SingleLiveEvent<T>
+fun <T> MutableSingleLiveEvent<T>.asImmutable() = this as SingleLiveEvent<T>
 
 fun MutableLceSingleLiveEventCompletable.asImmutable() = this as LceSingleLiveEvent<Unit>
 fun <C> MutableLceSingleLiveEvent<C>.asImmutable() = this as LceSingleLiveEvent<C>
@@ -103,9 +103,9 @@ open class LceSingleLiveEvent2<C, E>(crashReporter: CrashReporter?) :
 
 open class LceSingleLiveEvent3<L, C, E>(
     private val crashReporter: CrashReporter? = null,
-    @VisibleForTesting(otherwise = PRIVATE) val loadingLiveEvent: SingleMutableLiveEvent<L> = SingleMutableLiveEvent(),
-    @VisibleForTesting(otherwise = PRIVATE) val contentLiveEvent: SingleMutableLiveEvent<C> = SingleMutableLiveEvent(),
-    @VisibleForTesting(otherwise = PRIVATE) val errorLiveEvent: SingleMutableLiveEvent<E> = SingleMutableLiveEvent()
+    @VisibleForTesting(otherwise = PRIVATE) val loadingLiveEvent: MutableSingleLiveEvent<L> = MutableSingleLiveEvent(),
+    @VisibleForTesting(otherwise = PRIVATE) val contentLiveEvent: MutableSingleLiveEvent<C> = MutableSingleLiveEvent(),
+    @VisibleForTesting(otherwise = PRIVATE) val errorLiveEvent: MutableSingleLiveEvent<E> = MutableSingleLiveEvent()
 ) {
 
     /**
@@ -141,7 +141,7 @@ open class LceSingleLiveEvent3<L, C, E>(
     }
 
     protected open fun <T> send(
-        liveEvent: SingleMutableLiveEvent<T>,
+        liveEvent: MutableSingleLiveEvent<T>,
         data: T?,
         threadStrategy: LiveEventThreadStrategy = DefaultThread
     ) {

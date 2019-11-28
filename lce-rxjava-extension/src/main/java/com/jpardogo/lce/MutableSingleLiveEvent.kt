@@ -2,7 +2,7 @@ package com.jpardogo.lce
 
 import androidx.annotation.MainThread
 
-class SingleMutableLiveEvent<T> : SingleLiveEvent<T>(){
+class MutableSingleLiveEvent<T> : SingleLiveEvent<T>() {
 
     @MainThread
     public override fun setValue(t: T?) {
