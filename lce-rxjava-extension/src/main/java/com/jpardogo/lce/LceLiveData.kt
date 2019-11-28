@@ -3,7 +3,6 @@ package com.jpardogo.lce
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 
 fun MutableLceLiveDataCompletable.asImmutable() = this as LceLiveData<Unit>
@@ -97,9 +96,9 @@ open class LceLiveData2<C, E>(crashReporter: CrashReporter?) :
 
 open class LceLiveData3<L, C, E>(
     private val crashReporter: CrashReporter? = null,
-    @VisibleForTesting(otherwise = PRIVATE) val loadingLiveData: MutableLiveData<L> = MutableLiveData(),
-    @VisibleForTesting(otherwise = PRIVATE) val contentLiveData: MutableLiveData<C> = MutableLiveData(),
-    @VisibleForTesting(otherwise = PRIVATE) val errorLiveData: MutableLiveData<E> = MutableLiveData()
+    @VisibleForTesting(otherwise = PRIVATE) val loadingLiveData: SingleMutableLiveEvent<L> = SingleMutableLiveEvent(),
+    @VisibleForTesting(otherwise = PRIVATE) val contentLiveData: SingleMutableLiveEvent<C> = SingleMutableLiveEvent(),
+    @VisibleForTesting(otherwise = PRIVATE) val errorLiveData: SingleMutableLiveEvent<E> = SingleMutableLiveEvent()
 ) {
 
     /**
@@ -132,7 +131,7 @@ open class LceLiveData3<L, C, E>(
     }
 
     protected open fun <T> send(
-        liveData: MutableLiveData<T>,
+        liveData: SingleMutableLiveEvent<T>,
         data: T?,
         threadStrategy: LiveDataThreadStrategy = DefaultThread
     ) {
