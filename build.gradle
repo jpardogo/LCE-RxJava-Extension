@@ -48,7 +48,7 @@ subprojects {
 
 ext.project_config = [
         'applicationId'       : "com.jpardogo.example",
-        'min_sdk'             : 14,
+        'min_sdk'             : 15,
         'target_sdk'          : 28,
         'compile_sdk'         : 28,
         'multidex'            : true,
