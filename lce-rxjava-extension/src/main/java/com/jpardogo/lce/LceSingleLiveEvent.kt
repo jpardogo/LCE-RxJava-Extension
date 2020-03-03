@@ -5,18 +5,23 @@ package com.jpardogo.lce
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.jpardogo.lce.ThreadStrategy.DefaultThread
 import com.jpardogo.lce.ThreadStrategy.ForceMainThread
 
-fun MutableLceLiveDataCompletable.asImmutable() = this as LceLiveData<Unit>
-fun <C> MutableLceLiveData<C>.asImmutable() = this as LceLiveData<C>
-fun <C, E> MutableLceLiveData2<C, E>.asImmutable() = this as LceLiveData2<C, E>
-fun <L, C, E> MutableLceLiveData3<L, C, E>.asImmutable() = this as LceLiveData3<L, C, E>
+fun <T> MutableLiveData<T>.asImmutable() = this as LiveData<T>
+fun <T> MutableSingleLiveEvent<T>.asImmutable() = this as SingleLiveEvent<T>
 
-class MutableLceLiveDataCompletable(crashReporter: CrashReporter? = null) :
-    LceLiveData<Unit>(crashReporter) {
+fun MutableLceSingleLiveEventCompletable.asImmutable() = this as LceSingleLiveEvent<Unit>
+fun <C> MutableLceSingleLiveEvent<C>.asImmutable() = this as LceSingleLiveEvent<C>
+fun <C, E> MutableLceSingleLiveEvent2<C, E>.asImmutable() = this as LceSingleLiveEvent2<C, E>
+fun <L, C, E> MutableLceSingleLiveEvent3<L, C, E>.asImmutable() =
+    this as LceSingleLiveEvent3<L, C, E>
+
+class MutableLceSingleLiveEventCompletable(crashReporter: CrashReporter? = null) :
+    LceSingleLiveEvent<Unit>(crashReporter) {
 
     fun isLoading(isLoading: Boolean, threadStrategy: ThreadStrategy = DefaultThread) {
         super.loading(isLoading, threadStrategy)
@@ -35,7 +40,8 @@ class MutableLceLiveDataCompletable(crashReporter: CrashReporter? = null) :
     }
 }
 
-class MutableLceLiveData<C>(crashReporter: CrashReporter? = null) : LceLiveData<C>(crashReporter) {
+class MutableLceSingleLiveEvent<C>(crashReporter: CrashReporter? = null) :
+    LceSingleLiveEvent<C>(crashReporter) {
 
     fun isLoading(isLoading: Boolean, threadStrategy: ThreadStrategy = DefaultThread) {
         super.loading(isLoading, threadStrategy)
@@ -54,8 +60,8 @@ class MutableLceLiveData<C>(crashReporter: CrashReporter? = null) : LceLiveData<
     }
 }
 
-class MutableLceLiveData2<C, E>(crashReporter: CrashReporter? = null) :
-    LceLiveData2<C, E>(crashReporter) {
+class MutableLceSingleLiveEvent2<C, E>(crashReporter: CrashReporter? = null) :
+    LceSingleLiveEvent2<C, E>(crashReporter) {
     fun isLoading(isLoading: Boolean, threadStrategy: ThreadStrategy = DefaultThread) {
         super.loading(isLoading, threadStrategy)
     }
@@ -73,8 +79,8 @@ class MutableLceLiveData2<C, E>(crashReporter: CrashReporter? = null) :
     }
 }
 
-class MutableLceLiveData3<L, C, E>(crashReporter: CrashReporter? = null) :
-    LceLiveData3<L, C, E>(crashReporter) {
+class MutableLceSingleLiveEvent3<L, C, E>(crashReporter: CrashReporter? = null) :
+    LceSingleLiveEvent3<L, C, E>(crashReporter) {
 
     fun isLoading(isLoading: L, threadStrategy: ThreadStrategy = DefaultThread) {
         super.loading(isLoading, threadStrategy)
@@ -93,25 +99,28 @@ class MutableLceLiveData3<L, C, E>(crashReporter: CrashReporter? = null) :
     }
 }
 
-open class LceLiveData<C>(crashReporter: CrashReporter? = null) :
-    LceLiveData2<C, LceErrorViewEntity>(crashReporter)
+open class LceSingleLiveEvent<C>(crashReporter: CrashReporter? = null) :
+    LceSingleLiveEvent2<C, LceErrorViewEntity>(crashReporter)
 
-open class LceLiveData2<C, E>(crashReporter: CrashReporter?) :
-    LceLiveData3<Boolean, C, E>(crashReporter)
+open class LceSingleLiveEvent2<C, E>(crashReporter: CrashReporter?) :
+    LceSingleLiveEvent3<Boolean, C, E>(crashReporter)
 
-open class LceLiveData3<L, C, E>(
+open class LceSingleLiveEvent3<L, C, E>(
     private val crashReporter: CrashReporter? = null,
-    @VisibleForTesting(otherwise = PRIVATE) val loadingLiveData: MutableLiveData<L> = MutableLiveData(),
-    @VisibleForTesting(otherwise = PRIVATE) val contentLiveData: MutableLiveData<C> = MutableLiveData(),
-    @VisibleForTesting(otherwise = PRIVATE) val errorLiveData: MutableLiveData<E> = MutableLiveData()
+    @VisibleForTesting(otherwise = PRIVATE) val loadingLiveEvent: MutableSingleLiveEvent<L> = MutableSingleLiveEvent(),
+    @VisibleForTesting(otherwise = PRIVATE) val contentLiveEvent: MutableSingleLiveEvent<C> = MutableSingleLiveEvent(),
+    @VisibleForTesting(otherwise = PRIVATE) val errorLiveEvent: MutableSingleLiveEvent<E> = MutableSingleLiveEvent()
 ) {
 
     protected open fun loading(isLoading: L, threadStrategy: ThreadStrategy = DefaultThread) {
-        send(loadingLiveData, isLoading, threadStrategy)
+        send(loadingLiveEvent, isLoading, threadStrategy)
     }
 
-    protected open fun content(content: C, threadStrategy: ThreadStrategy = DefaultThread) {
-        send(this.contentLiveData, content, threadStrategy)
+    protected open fun content(
+        content: C,
+        threadStrategy: ThreadStrategy = DefaultThread
+    ) {
+        send(this.contentLiveEvent, content, threadStrategy)
     }
 
     protected open fun error(
@@ -120,22 +129,22 @@ open class LceLiveData3<L, C, E>(
         threadStrategy: ThreadStrategy = DefaultThread
     ) {
         crashReporter?.report(throwable)
-        send(this.errorLiveData, error, threadStrategy)
+        send(this.errorLiveEvent, error, threadStrategy)
     }
 
     protected open fun complete(
         completeEvent: C,
         threadStrategy: ThreadStrategy = DefaultThread
     ) {
-        send(contentLiveData, completeEvent, threadStrategy)
+        send(contentLiveEvent, completeEvent, threadStrategy)
     }
 
     protected open fun <T> send(
-        liveData: MutableLiveData<T>,
+        liveEvent: MutableSingleLiveEvent<T>,
         data: T?,
         threadStrategy: ThreadStrategy
     ) {
-        liveData.run {
+        liveEvent.run {
             when (threadStrategy) {
                 is ForceMainThread -> postValue(data)
                 is DefaultThread -> value = data
@@ -149,17 +158,17 @@ open class LceLiveData3<L, C, E>(
         onError: (E) -> Unit,
         onLoading: ((L) -> Unit)? = null
     ) {
-        contentLiveData.observe(lifecycleOwner, Observer { content ->
+        contentLiveEvent.observe(lifecycleOwner, Observer { content ->
             onContent(content)
         })
 
-        errorLiveData.observe(lifecycleOwner, Observer { error ->
+        errorLiveEvent.observe(lifecycleOwner, Observer { error ->
             onError(error)
         })
 
         onLoading?.let {
-            loadingLiveData.observe(lifecycleOwner, Observer { loadingLiveData ->
-                it(loadingLiveData)
+            loadingLiveEvent.observe(lifecycleOwner, Observer { loadingLiveEvent ->
+                it(loadingLiveEvent)
             })
         }
     }

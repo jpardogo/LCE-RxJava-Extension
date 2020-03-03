@@ -10,7 +10,7 @@ ext.lib_versions = [
         androidx_core_ktx        : '1.2.0-alpha01',
         androidx_recyclerview    : '1.1.0-alpha05',
         androidx_constraintlayout: '2.0.0-beta1',
-        androidx_arch_comp       : '2.2.0-alpha01',
+        androidx_arch_comp       : '2.2.0-rc02',
         androidx_fragment_ktx    : '1.1.0-alpha08',
         androidx_material        : '1.1.0-alpha06',
         androidx_multidex        : '1.0.3',
